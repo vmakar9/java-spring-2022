@@ -45,7 +45,7 @@ public class MainController {
     }
     @PutMapping("/customors/{id}")
     public ResponseEntity<List<Customer>> updateCustomer(@PathVariable int id ,@RequestBody Customer customer){
-        this.customers.set(id,customer);
+        this.customers.set(id-1,customer);
         return new ResponseEntity<>(this.customers,HttpStatusCode.valueOf(200));
 
     }
