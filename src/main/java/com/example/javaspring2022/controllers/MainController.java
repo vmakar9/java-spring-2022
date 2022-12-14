@@ -43,4 +43,10 @@ public class MainController {
        this.customers.remove(id-1);
        return new ResponseEntity<>(this.customers, HttpStatusCode.valueOf(200));
     }
+    @PutMapping("/customors/{id}")
+    public ResponseEntity<List<Customer>> updateCustomer(@PathVariable int id ,@RequestBody Customer customer){
+        this.customers.set(id,customer);
+        return new ResponseEntity<>(this.customers,HttpStatusCode.valueOf(200));
+
+    }
 }
