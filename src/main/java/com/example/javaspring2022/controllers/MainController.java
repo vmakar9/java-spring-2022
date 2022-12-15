@@ -43,10 +43,24 @@ public class MainController {
        this.customers.remove(id-1);
        return new ResponseEntity<>(this.customers, HttpStatusCode.valueOf(200));
     }
-    @PutMapping("/customors/{id}")
-    public ResponseEntity<List<Customer>> updateCustomer(@PathVariable int id ,@RequestBody Customer customer){
-        this.customers.set(id-1,customer);
-        return new ResponseEntity<>(this.customers,HttpStatusCode.valueOf(200));
+    @PutMapping("/customers/{id}")
+    public ResponseEntity updateCustomer(@PathVariable int id ,@RequestBody Customer customer){
+        Customer custo = customers.stream().filter(customer1 -> customer1.getId()==  id).findFirst().get();
+        int indexof = customers.indexOf(custo);
+        customers.set(indexof,customer);
+        return new ResponseEntity<>(HttpStatusCode.valueOf(201));
 
+    }
+
+    @PatchMapping("/customers/{id}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void updateCustomers2(@PathVariable int id,@RequestBody Customer customer){
+       for(Customer item:customers){
+           if(item.getId()==  id){
+               item.setId(customer.getId());
+               item.setName(customer.getName());
+           }
+
+       }
     }
 }
