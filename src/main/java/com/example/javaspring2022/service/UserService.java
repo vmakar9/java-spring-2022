@@ -50,10 +50,17 @@ public class UserService {
 
     public ResponseEntity<List<User>> getUserByName(String name){
         if(name !=  null && !name.isBlank()){
-            return new ResponseEntity<>(userDAO.findCustomerByName(name),HttpStatusCode.valueOf(200));
+            return new ResponseEntity<>(userDAO.findUserByName(name),HttpStatusCode.valueOf(200));
         }else {
             throw new RuntimeException();
         }
      }
 
+    public ResponseEntity<List<User>> getUserBySurName(String surname){
+        if(surname !=  null && !surname.isBlank()){
+            return new ResponseEntity<>(userDAO.findUserBySurname(surname),HttpStatusCode.valueOf(200));
+        }else {
+            throw new RuntimeException();
+        }
+    }
 }
