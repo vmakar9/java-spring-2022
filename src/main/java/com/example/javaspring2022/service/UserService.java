@@ -15,11 +15,8 @@ import java.util.List;
 @Service
 public class UserService {
     private UserDAO userDAO;
-    private final CustomerDao customerDao;
 
-    ;
-
-    public void save(User user){
+    public void saveUser(User user){
         if(user.getId()>0){
             userDAO.save(user);
         }else {
@@ -37,15 +34,15 @@ public class UserService {
        return new ResponseEntity<>(user,HttpStatusCode.valueOf(200));
     }
 
-    public void updateUser(int id){
-        User user = userDAO.findById(id).get();
+    public void updateUser(int id, User user){
+        user = userDAO.findById(id).get();
         user.setName(user.getName());
         user.setSurname(user.getSurname());
         user.setEmail(user.getEmail());
     }
 
     public void deleteUser(int id){
-        customerDao.deleteById(id);
+        userDAO.deleteById(id);
     }
 
     public ResponseEntity<List<User>> getUserByName(String name){
