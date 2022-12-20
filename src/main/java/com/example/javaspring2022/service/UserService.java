@@ -15,6 +15,7 @@ import java.util.List;
 @Service
 public class UserService {
     private UserDAO userDAO;
+ ;
 
     public void saveUser(User user){
         if(user.getId()>0){
@@ -29,16 +30,13 @@ public class UserService {
         return new ResponseEntity<>(userList, HttpStatusCode.valueOf(200));
     }
 
-    public ResponseEntity<User> getUserById(int id){
-       User user = userDAO.findById(id).get();
-       return new ResponseEntity<>(user,HttpStatusCode.valueOf(200));
+    public User getUserById(int id){
+      return userDAO.findById(id).get();
+
     }
 
-    public void updateUser(int id, User user){
-        user = userDAO.findById(id).get();
-        user.setName(user.getName());
-        user.setSurname(user.getSurname());
-        user.setEmail(user.getEmail());
+    public void updateUserById(User user){
+       userDAO.save(user);
     }
 
     public void deleteUser(int id){

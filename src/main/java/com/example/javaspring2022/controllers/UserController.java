@@ -1,13 +1,16 @@
 package com.example.javaspring2022.controllers;
 
+import com.example.javaspring2022.dao.UserDAO;
 import com.example.javaspring2022.models.User;
 import com.example.javaspring2022.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @AllArgsConstructor
 @RestController
@@ -15,6 +18,7 @@ import java.util.List;
 public class UserController {
 
     private UserService userService;
+    private final UserDAO userDAO;
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
@@ -29,12 +33,18 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<User> getOneUser(@PathVariable int id){
-        return userService.getUserById(id);
+       User user = userDAO.findById(id).get();
+       return new ResponseEntity<>(user, HttpStatusCode.valueOf(200));
     }
 
     @PatchMapping("/{id}")
-    public void updateUser(@PathVariable int id,@RequestBody User user){
-        userService.updateUser(id,user);
+    public void patch(@PathVariable int id,@RequestBody User user){
+    User user1 = userService.getUserById(id);
+
+       user1.setName(user.getName());
+       user1.setSurname(user.getSurname());
+       user1.setEmail(user.getEmail());
+       userService.updateUserById(user1);
     }
 
     @DeleteMapping("/{id}")
