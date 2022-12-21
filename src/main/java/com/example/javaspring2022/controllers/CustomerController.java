@@ -71,4 +71,11 @@ public class CustomerController {
         return customerServirce.customerList(name);
 
     }
+
+    @GetMapping("activate/{id}")
+    public void activateCustomer(@PathVariable int id){
+      Customer customer= customerServirce.getCustomerById(id);
+      customer.setActivated(true);
+      customerServirce.updateCustomer(customer);
+    }
 }

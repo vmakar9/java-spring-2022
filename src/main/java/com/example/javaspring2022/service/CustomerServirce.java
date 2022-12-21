@@ -16,12 +16,11 @@ public class CustomerServirce {
 
     private CustomerDao customerDao;
 
+    private MailService mailService;
     public void save(Customer customer){
-        if(customer.getId()>0){
-            customerDao.save(customer);
-        }else {
-            throw new RuntimeException("id lower zero");
-        }
+        customerDao.save(customer);
+        //todo send email
+        mailService.send(customer);
     }
 
     public ResponseEntity<List<Customer>> customerList(String name){
@@ -32,4 +31,13 @@ public class CustomerServirce {
         }
 
     }
+
+    public Customer getCustomerById(int id){
+       return customerDao.findById(id).get();
+    }
+
+    public void updateCustomer(Customer customer){
+        customerDao.save(customer);
+    }
+
 }

@@ -28,7 +28,11 @@ public class Customer {
     @JsonView({Views.Admin.class,Views.Client.class})
     private String name;
 
+    private boolean isActivated = false;
+    @JsonView({Views.Admin.class,Views.Client.class})
+    private String email;
     public Customer(String name) {
         this.name = name;
     }
+
 }
