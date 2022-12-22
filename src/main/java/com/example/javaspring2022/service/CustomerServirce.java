@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.List;
 
 @Service
@@ -17,10 +18,10 @@ public class CustomerServirce {
     private CustomerDao customerDao;
 
     private MailService mailService;
-    public void save(Customer customer){
+    public void save(Customer customer, File file){
         customerDao.save(customer);
         //todo send email
-        mailService.send(customer);
+        mailService.send(customer,file);
     }
 
     public ResponseEntity<List<Customer>> customerList(String name){

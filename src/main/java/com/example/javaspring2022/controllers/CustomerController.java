@@ -13,7 +13,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -39,7 +42,7 @@ public class CustomerController {
     @ResponseStatus(HttpStatus.CREATED)
     public void saveCustomer(@RequestBody Customer customer){
 //        customerDao.save(customer);
-          customerServirce.save(customer);
+//          customerServirce.save(customer);
 
     }
     
@@ -77,5 +80,18 @@ public class CustomerController {
       Customer customer= customerServirce.getCustomerById(id);
       customer.setActivated(true);
       customerServirce.updateCustomer(customer);
+    }
+
+    @PostMapping("/saveWithAvatar")
+    public void saveWithAvatar(@RequestParam String name, @RequestParam String email, @RequestParam MultipartFile avatar) throws IOException {
+       Customer customer= new Customer(name,email,"/img/"+avatar.getOriginalFilename());
+
+
+
+      String pathname = System.getProperty("user.home")+File.separator+"Pictures"+ File.separator + avatar.getOriginalFilename();
+      File file = new File(pathname);
+      avatar.transferTo(new File(pathname));
+        customerServirce.save(customer,file);
+
     }
 }
