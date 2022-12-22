@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -72,10 +73,11 @@ public class CustomerController {
 
     }
 
-    @GetMapping("activate/{id}")
-    public void activateCustomer(@PathVariable int id){
-      Customer customer= customerServirce.getCustomerById(id);
-      customer.setActivated(true);
-      customerServirce.updateCustomer(customer);
+    @GetMapping("activate/{token}")
+    public void activateCustomer(@PathVariable String token){
+      Customer customer= customerServirce.byToken(token);
+      customerServirce.activate(customer);
+
+
     }
 }

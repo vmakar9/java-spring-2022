@@ -2,14 +2,12 @@ package com.example.javaspring2022.models;
 
 import com.example.javaspring2022.models.views.Views;
 import com.fasterxml.jackson.annotation.JsonView;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
 
 @Entity
@@ -31,6 +29,11 @@ public class Customer {
     private boolean isActivated = false;
     @JsonView({Views.Admin.class,Views.Client.class})
     private String email;
+
+    @ToString.Exclude
+    @OneToOne(fetch = FetchType.LAZY ,cascade = CascadeType.ALL)
+    private  ActivationToken activationToken;
+
     public Customer(String name) {
         this.name = name;
     }
