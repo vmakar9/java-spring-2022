@@ -1,5 +1,7 @@
 package com.example.javaspring2022.configs;
 
+import com.example.javaspring2022.configs.dao.CustomMessageDAO;
+import com.example.javaspring2022.wsmodels.CustomMessage;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketMessage;
@@ -10,6 +12,12 @@ import java.io.IOException;
 import java.util.*;
 
 public class WebSocketConnection extends TextWebSocketHandler {
+
+    private CustomMessageDAO customMessageDAO;
+
+    public WebSocketConnection(CustomMessageDAO customMessageDAO) {
+        this.customMessageDAO = customMessageDAO;
+    }
 
     private Map<String,WebSocketSession> sessionMap = new HashMap<>();
 
@@ -37,6 +45,8 @@ public class WebSocketConnection extends TextWebSocketHandler {
 
     @Override
     public void handleMessage(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
+
+        customMessageDAO.save(new CustomMessage(session.getId(), (String) message.getPayload()));
        sessionMap.forEach((s, webSocketSession) -> {
            try {
                webSocketSession.sendMessage(new TextMessage(message.getPayload()+ " " + new Date(System.currentTimeMillis())));
